@@ -1,12 +1,10 @@
 import React, { useContext, useState } from "react";
 import { Clear } from "@material-ui/icons";
-
 import storeApi from "../../utils/storeApi";
-
 import "./styles.scss";
 
-export default function InputCard({ setOpen, listId, type }) {
-  const { addMoreCard, addMoreList } = useContext(storeApi);
+export default function InputCard({ setOpen, boardId, type }) {
+  const { addMoreCard, addMoreBoard } = useContext(storeApi);
   const [title, setTitle] = useState("");
 
   const handleOnChange = (e) => {
@@ -15,9 +13,9 @@ export default function InputCard({ setOpen, listId, type }) {
 
   const handleBtnConfirm = () => {
     if (type === "card") {
-      addMoreCard(title, listId);
+      addMoreCard(title, boardId);
     } else {
-      addMoreList(title);
+      addMoreBoard(title);
     }
     setOpen(false);
     setTitle("");
@@ -33,14 +31,14 @@ export default function InputCard({ setOpen, listId, type }) {
           placeholder={
             type === "card"
               ? "Enter a title of this card..."
-              : "Enter list title"
+              : "Enter board title"
           }
           autoFocus
         />
       </div>
       <div className="confirm">
         <button className="button-confirm" onClick={handleBtnConfirm}>
-          {type === "card" ? "Add Card" : "Add List"}
+          {type === "card" ? "Add Card" : "Add Board"}
         </button>
         <button
           className="button-cancel"

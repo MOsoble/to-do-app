@@ -6,14 +6,14 @@ import storeApi from "../../utils/storeApi";
 
 import "./styles.scss";
 
-export default function Title({ title, listId }) {
+export default function Title({ title, boardId }) {
   const [open, setOpen] = useState(false);
   const [openOptions, setOpenOptions] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
-  const { updateListTitle, deleteList } = useContext(storeApi);
+  const { updateBoardTitle, deleteBoard } = useContext(storeApi);
 
   const handleOnBlur = () => {
-    updateListTitle(newTitle, listId);
+    updateBoardTitle(newTitle, boardId);
     setOpen(!open);
   };
 
@@ -44,7 +44,7 @@ export default function Title({ title, listId }) {
             {title}
           </h2>
           <button
-            className="list-button"
+            className="board-button"
             onClick={() => setOpenOptions(!openOptions)}
           >
             <MoreVert />
@@ -59,10 +59,10 @@ export default function Title({ title, listId }) {
                 <li
                   onClick={() => {
                     setOpenOptions(!openOptions);
-                    deleteList(listId);
+                    deleteBoard(boardId);
                   }}
                 >
-                  Delete list
+                  Delete Board
                 </li>
                 <li
                   onClick={() => {
