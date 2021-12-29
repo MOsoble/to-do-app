@@ -8,13 +8,13 @@ import storeApi from "../../utils/storeApi";
 
 import "./styles.scss";
 
-export default function Card({ card, index, boardId }) {
+export default function Card({ card, index, listId }) {
   const [open, setOpen] = useState(false);
   const [newTitle, setNewTitle] = useState(card.title);
   const { removeCard, updateCardTitle } = useContext(storeApi);
 
   const handleOnBlur = () => {
-    updateCardTitle(newTitle, index, boardId);
+    updateCardTitle(newTitle, index, listId);
     setOpen(!open);
   };
 
@@ -50,7 +50,7 @@ export default function Card({ card, index, boardId }) {
                 <p>{card.title}</p>
                 <button
                   onClick={() => {
-                    removeCard(index, boardId);
+                    removeCard(index, listId);
                   }}
                 >
                   <DeleteOutline />

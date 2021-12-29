@@ -7,29 +7,29 @@ import InputContainer from "../InputContainer";
 
 import "./styles.scss";
 
-export default function Board({ board, index }) {
+export default function List({ list, index }) {
   return (
-    <Draggable draggableId={board.id} index={index}>
+    <Draggable draggableId={list.id} index={index}>
       {(provided) => (
         <div {...provided.draggableProps} ref={provided.innerRef}>
-          <div className="board-cards" {...provided.dragHandleProps}>
-            <div className="title-board">
-              <Title title={board.title} boardId={board.id} />
+          <div className="list-cards" {...provided.dragHandleProps}>
+            <div className="title-list">
+              <Title title={list.title} listId={list.id} />
             </div>
             <div className="container-cards">
-              <Droppable droppableId={board.id} type="task">
+              <Droppable droppableId={list.id} type="task">
                 {(provided) => (
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                     className="card-container"
                   >
-                    {board.cards.map((card, index) => (
+                    {list.cards.map((card, index) => (
                       <Card
                         key={card.id}
                         card={card}
                         index={index}
-                        boardId={board.id}
+                        listId={list.id}
                       />
                     ))}
                     {provided.placeholder}
@@ -37,7 +37,7 @@ export default function Board({ board, index }) {
                 )}
               </Droppable>
             </div>
-            <InputContainer boardId={board.id} type="card" />
+            <InputContainer listId={list.id} type="card" />
           </div>
         </div>
       )}
