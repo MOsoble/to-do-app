@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 import InputContainer from "../components/InputContainer";
-import List from "../components/List";
+import Board from "../components/Board";
 
 import store from "../utils/store";
 import StoreApi from "../utils/storeApi";
@@ -24,7 +24,7 @@ const initialState = () => {
 export default function Home() {
   const [data, setData] = useState(initialState);
 
-  const addMoreCard = (title, listId) => {
+  const addMoreCard = (title, boardId) => {
     if (!title) {
       return;
     }
@@ -35,80 +35,80 @@ export default function Home() {
       title,
     };
 
-    const list = data.lists[listId];
-    list.cards = [...list.cards, newCard];
+    const board = data.boards[boardId];
+    board.cards = [...board.cards, newCard];
 
     const newState = {
       ...data,
-      lists: {
-        ...data.lists,
-        [listId]: list,
+      boards: {
+        ...data.boards,
+        [boardId]: board,
       },
     };
     setData(newState);
     window.localStorage.setItem("dataKanban", JSON.stringify(newState));
   };
-  const removeCard = (index, listId) => {
-    const list = data.lists[listId];
+  const removeCard = (index, boardId) => {
+    const board = data.boards[boardId];
 
-    list.cards.splice(index, 1);
+    board.cards.splice(index, 1);
 
     const newState = {
       ...data,
-      lists: {
-        ...data.lists,
-        [listId]: list,
+      boards: {
+        ...data.boards,
+        [boardId]: board,
       },
     };
     setData(newState);
     window.localStorage.setItem("dataKanban", JSON.stringify(newState));
   };
 
-  const updateCardTitle = (title, index, listId) => {
-    const list = data.lists[listId];
-    list.cards[index].title = title;
+  const updateCardTitle = (title, index, boardId) => {
+    const board = data.boards[boardId];
+    board.cards[index].title = title;
 
     const newState = {
       ...data,
-      lists: {
-        ...data.lists,
-        [listId]: list,
+      boards: {
+        ...data.boards,
+        [boardId]: board,
       },
     };
     setData(newState);
     window.localStorage.setItem("dataKanban", JSON.stringify(newState));
   };
-  const addMoreList = (title) => {
+  const addMoreBoard = (title) => {
     if (!title) {
       return;
     }
 
-    const newListId = uuid();
-    const newList = {
-      id: newListId,
+    const newBoardId = uuid();
+    const newBoard = {
+      id: newBoardId,
       title,
       cards: [],
     };
     const newState = {
-      listIds: [...data.listIds, newListId],
-      lists: {
-        ...data.lists,
-        [newListId]: newList,
+      boardIds: [...data.boardIds, newBoardId],
+      boards: {
+        ...data.boards,
+        [newBoardId]: newBoard,
       },
     };
     setData(newState);
     window.localStorage.setItem("dataKanban", JSON.stringify(newState));
   };
 
-  const updateListTitle = (title, listId) => {
-    const list = data.lists[listId];
-    list.title = title;
+  const updateBoardTitle = (title, boardId) => {
+    const board = data.boards[boardId];
+    board.title = title;
 
     const newState = {
       ...data,
-      lists: {
-        ...data.lists,
-        [listId]: list,
+      boards: {
+        ...data.boards,
+        [boardId]: board,
       },
     };
 
@@ -116,17 +116,17 @@ export default function Home() {
     window.localStorage.setItem("dataKanban", JSON.stringify(newState));
   };
 
-  const deleteList = (listId) => {
-    const lists = data.lists;
-    const listIds = data.listIds;
+  const deleteBoard = (boardId) => {
+    const boards = data.boards;
+    const boardIds = data.boardIds;
 
-    delete lists[listId];
+    delete boards[boardId];
 
-    listIds.splice(listIds.indexOf(listId), 1);
+    boardIds.splice(boardIds.indexOf(boardId), 1);
 
     const newState = {
-      lists: lists,
-      listIds: listIds,
+      boards: boards,
+      boardIds: boardIds,
     };
 
     setData(newState);
@@ -140,15 +140,15 @@ export default function Home() {
       return;
     }
 
-    if (type === "list") {
-      const newListIds = data.listIds;
+    if (type === "board") {
+      const newBoardIds = data.boardIds;
 
-      newListIds.splice(source.index, 1);
-      newListIds.splice(destination.index, 0, draggableId);
+      newBoardIds.splice(source.index, 1);
+      newBoardIds.splice(destination.index, 0, draggableId);
 
       const newState = {
         ...data,
-        listIds: newListIds,
+        boardIds: newBoardIds,
       };
       setData(newState);
       window.localStorage.setItem("dataKanban", JSON.stringify(newState));
@@ -156,35 +156,35 @@ export default function Home() {
       return;
     }
 
-    const sourceList = data.lists[source.droppableId];
-    const destinationList = data.lists[destination.droppableId];
-    const draggingCard = sourceList.cards.filter(
+    const sourceBoard = data.boards[source.droppableId];
+    const destinationBoard = data.boards[destination.droppableId];
+    const draggingCard = sourceBoard.cards.filter(
       (card) => card.id === draggableId
     )[0];
 
     if (source.droppableId === destination.droppableId) {
-      sourceList.cards.splice(source.index, 1);
-      destinationList.cards.splice(destination.index, 0, draggingCard);
+      sourceBoard.cards.splice(source.index, 1);
+      destinationBoard.cards.splice(destination.index, 0, draggingCard);
 
       const newState = {
         ...data,
-        lists: {
-          ...data.lists,
-          [sourceList.id]: destinationList,
+        boards: {
+          ...data.boards,
+          [sourceBoard.id]: destinationBoard,
         },
       };
       setData(newState);
       window.localStorage.setItem("dataKanban", JSON.stringify(newState));
     } else {
-      sourceList.cards.splice(source.index, 1);
-      destinationList.cards.splice(destination.index, 0, draggingCard);
+      sourceBoard.cards.splice(source.index, 1);
+      destinationBoard.cards.splice(destination.index, 0, draggingCard);
 
       const newState = {
         ...data,
-        lists: {
-          ...data.lists,
-          [sourceList.id]: sourceList,
-          [destinationList.id]: destinationList,
+        boards: {
+          ...data.boards,
+          [sourceBoard.id]: sourceBoard,
+          [destinationBoard.id]: destinationBoard,
         },
       };
 
@@ -196,28 +196,28 @@ export default function Home() {
     <StoreApi.Provider
       value={{
         addMoreCard,
-        addMoreList,
-        updateListTitle,
+        addMoreBoard,
+        updateBoardTitle,
         removeCard,
         updateCardTitle,
-        deleteList
+        deleteBoard,
       }}
     >
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="app" type="list" direction="horizontal">
+        <Droppable droppableId="app" type="board" direction="horizontal">
           {(provided) => (
             <div
               className="wrapper"
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
-              {data.listIds.map((listId, index) => {
-                const list = data.lists[listId];
+              {data.boardIds.map((boardId, index) => {
+                const board = data.boards[boardId];
 
-                return <List list={list} key={listId} index={index} />;
+                return <board board={board} key={boardId} index={index} />;
               })}
               <div>
-                <InputContainer type="list" />
+                <InputContainer type="board" />
               </div>
               {provided.placeholder}
             </div>
