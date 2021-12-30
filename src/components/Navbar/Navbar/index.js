@@ -1,5 +1,4 @@
 import React from "react";
-import Bookmark from "@material-ui/icons/Bookmark";
 import "./styles.scss";
 
 export default function Navbar() {
@@ -8,10 +7,8 @@ export default function Navbar() {
       <nav>
         <div className="container">
           <div>
-            <Bookmark/>
-            <h1>To Do</h1>
+            <h1>Lovelace Inspiration Board</h1>
           </div>
-          
         </div>
       </nav>
     </div>

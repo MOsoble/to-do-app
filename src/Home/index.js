@@ -10,15 +10,11 @@ import StoreApi from "../utils/storeApi";
 
 import "./styles.scss";
 
-const dataStorage = JSON.parse(window.localStorage.getItem("dataKanban"));
-
+// const dataStorage = JSON.parse(window.localStorage.getItem("dataKanban"));
+// if datastorage - do something. deleted.
 const initialState = () => {
-  if (dataStorage) {
-    return dataStorage;
-  } else {
-    window.localStorage.setItem("dataKanban", JSON.stringify(store));
-    return store;
-  }
+  window.localStorage.setItem("dataKanban", JSON.stringify(store));
+  return store;
 };
 
 export default function Home() {
@@ -200,7 +196,7 @@ export default function Home() {
         updateListTitle,
         removeCard,
         updateCardTitle,
-        deleteList
+        deleteList,
       }}
     >
       <DragDropContext onDragEnd={onDragEnd}>
